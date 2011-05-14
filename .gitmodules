@@ -1,0 +1,3 @@
+[submodule "lib/vendors/fuel/core"]
+	path = lib/vendors/fuel/core
+	url = https://github.com/fuel/core.git

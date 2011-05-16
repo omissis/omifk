@@ -43,7 +43,7 @@ function omifk_main_loop() {
     // Loop on every file and directory
     while (false !== ($module_filename = readdir($handle))) {
       // If the considered one doesn't start with '.' then include the module
-      if (strpos($module_filename, '.') !== 0) {
+      if (strpos($module_filename, '.') !== 0 && is_dir(OMIFK_DIRECTORY_MODULES . $module_filename)) {
         $module_name = str_replace('.module', '', $module_filename);
         akh_set_recursive($omifk_config, array('modules', $module_name), omifk_include_module($module_name));
       }
@@ -57,17 +57,17 @@ function omifk_main_loop() {
 
 /**
  * Loops on all active modules' implemented hook and run them
- * 
- * @global array $omifk_config 
- * 
+ *
+ * @global array $omifk_config
+ *
  * @return void
  */
 function omifk_run_modules() {
   global $omifk_config;
-  
+
   $hooks   = omifk_list_hooks();
   $modules = akh_get($omifk_config, 'modules');
-  
+
   foreach ($hooks as $hook) {
     foreach ($modules as $module => $active) {
       if (!$active) {
